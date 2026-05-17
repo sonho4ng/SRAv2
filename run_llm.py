@@ -426,7 +426,7 @@ class Trainer:
                     if torch.isnan(der_loss):
                         print('der_loss nan')
 
-                kd_loss += 10 * (span_loss + der_loss)
+                kd_loss += 2 * (span_loss + der_loss)
 
 
                 # s_logits = self.student.model.model.lm_head(student_outputs.embeddings)
