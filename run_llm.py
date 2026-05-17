@@ -407,46 +407,11 @@ class Trainer:
                 if self.args.span_loss:
                     for i in range(n_layer):
                         s_hidden = student_outputs.hidden_states[i]
-                        t_hidden = teacher_outputs.hidden_states[i]
+                        t_didden = teacher_outputs.hidden_states[i]
                         span_w = span_weights[i]
 
-                        print("=" * 80)
-                        print(f"Layer {i}")
-                        print("shape:", s_hidden.shape, t_hidden.shape, span_w.shape)
-
-                        def check(name, x):
-                            x_float = x.detach().float()
-                            print(
-                                name,
-                                "| nan:", torch.isnan(x_float).any().item(),
-                                "| inf:", torch.isinf(x_float).any().item(),
-                                "| finite:", torch.isfinite(x_float).all().item(),
-                                "| min:", x_float[torch.isfinite(x_float)].min().item() if torch.isfinite(x_float).any() else None,
-                                "| max:", x_float[torch.isfinite(x_float)].max().item() if torch.isfinite(x_float).any() else None,
-                                "| mean:", x_float[torch.isfinite(x_float)].mean().item() if torch.isfinite(x_float).any() else None,
-                            )
-
-                        check("s_hidden", s_hidden)
-                        check("t_hidden", t_hidden)
-                        check("span_w", span_w)
-
-                        sw = span_w.detach().float().squeeze(-1)
-                        print("span_w first sample first 20:", sw[0, :20])
-                        print("span_w second sample first 20:", sw[1, :20] if sw.size(0) > 1 else "no second sample")
-                        print("span_w sum per sample:", sw.sum(dim=-1))
-                        print("span_w min per sample:", sw.min(dim=-1).values)
-                        print("span_w max per sample:", sw.max(dim=-1).values)
-
-                        cos_sim = F.cosine_similarity(
-                            s_hidden.detach().float(),
-                            t_hidden.detach().float(),
-                            dim=-1,
-                            eps=1e-5,
-                        )
-                        check("cos_sim", cos_sim)
-
-                        state_loss = cosine_token_weight_loss(s_hidden, t_hidden, span_w)
-                        print(f"Layer {i} state_loss:", state_loss.item())
+                        state_loss = cosine_token_weight_loss(s_hidden, t_didden, span_w)
+                        # state_loss = mse_token_weight_loss(s_hidden, t_didden, span_w)
             
                         span_loss += self.hidden_loss_weights[i] * state_loss
 
@@ -480,6 +445,10 @@ class Trainer:
                 score_loss = (score_loss * pair_weights).sum() / B
     
                 kd_loss += 50 * score_loss
+
+                # s2t_logits = self.teacher_lm_head(student_outputs.hidden_states[n_layer - 1])
+                # t_logits = self.teacher_lm_head(teacher_outputs.hidden_states[n_layer - 1])
+                # kd_loss += self.soft_label_distill_loss(s2t_logits, t_logits)
 
                 s_logits = self.student.model.model.lm_head(student_outputs.embeddings)
                 t_logits = self.teacher_lm_head(teacher_outputs.hidden_states[n_layer - 1])
