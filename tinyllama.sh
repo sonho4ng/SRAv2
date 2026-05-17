@@ -3,9 +3,13 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-LOG_FILE="$SCRIPT_DIR/train.log"
-
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR"
+
+OUTPUT_DIR="tinyllama-checkpoint"
+mkdir -p "$OUTPUT_DIR"
+
+LOG_FILE="$SCRIPT_DIR/$OUTPUT_DIR/train.log"
 
 # Default options (can be overridden by passing the same --option in the command line)
 DEFAULT_ARGS=(

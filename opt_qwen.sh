@@ -3,9 +3,11 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-LOG_FILE="$SCRIPT_DIR/train.log"
+OUTPUT_DIR="facebook-checkpoint"
+mkdir -p "$OUTPUT_DIR"
 
-cd "$SCRIPT_DIR"
+LOG_FILE="$SCRIPT_DIR/$OUTPUT_DIR/train.log"
+
 
 # Default options (can be overridden by passing the same --option in the command line)
 DEFAULT_ARGS=(
