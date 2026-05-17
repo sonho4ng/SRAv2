@@ -122,7 +122,7 @@ llm_type = ["gpt2", "opt", "llama", "gptj", "llama2", "mistral", "tinyllama", "m
 student_model_type = runtime_args.student_model_type
 teacher_model_type = runtime_args.teacher_model_type
 
-load_model_kwargs = {'torch_dtype': torch.float16,
+load_model_kwargs = {'torch_dtype': torch.bfloat16,
                      'quantization_config': None,
                      'device_map': args.teach_device,
                      'trust_remote_code': True,
