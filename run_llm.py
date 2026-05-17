@@ -710,3 +710,38 @@ for epoch in range(args.num_train_epochs):
    
 
 executor.shutdown()
+
+
+evaluator.seeds = [10]
+
+evaluator.model = trainer.student.model.model
+result = evaluator.evaluate_benchmark_dataset(
+    dataset_path='llm-data/dolly/valid.jsonl',
+    dataset_name='dolly', batch_size=16,
+    max_seq_length=256, max_new_tokens=512)
+print(result)
+
+
+result = evaluator.evaluate_benchmark_dataset(
+    dataset_path='llm-data/vicuna/valid.jsonl',
+    dataset_name='vicuna', batch_size=16,
+    max_seq_length=256, max_new_tokens=512)
+print(result)
+
+result = evaluator.evaluate_benchmark_dataset(
+    dataset_path='llm-data/self-inst/valid.jsonl',
+    dataset_name='self-inst', batch_size=16,
+    max_seq_length=256, max_new_tokens=512)
+print(result)
+
+result = evaluator.evaluate_benchmark_dataset(
+    dataset_path='llm-data/sinst/11_/valid.jsonl',
+    dataset_name='S-NI', batch_size=16,
+    max_seq_length=256, max_new_tokens=512)
+print(result)
+
+result = evaluator.evaluate_benchmark_dataset(
+    dataset_path='llm-data/dialog/valid.jsonl',
+    dataset_name='dialog', batch_size=8,
+    max_seq_length=512, max_new_tokens=384)
+print(result)
