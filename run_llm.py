@@ -128,7 +128,7 @@ load_model_kwargs = {'torch_dtype': torch.float16,
                      'trust_remote_code': True,
                      'output_hidden_states': args.finetune_hidden_states,
                      'output_attentions': args.output_attentions,
-                     'attn_implementation':  'eager' if args.output_attentions else 'sdpa',
+                     'attn_implementation': 'sdpa',
                      'token' : args.hf_token,}
 
 teacher_model = TeacherQwen(model_name = args.teacher_model, 
