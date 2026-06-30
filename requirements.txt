@@ -1,0 +1,7 @@
+
+rouge_score
+scikit-learn
+scipy
+tqdm
+huggingface_hub
+
