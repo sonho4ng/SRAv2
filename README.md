@@ -6,7 +6,7 @@ It enables span-level alignment to transfer knowledge effectively across heterog
 ---
 
 ## 1. Environment Setup
-
+ 
 Make sure you are using **Python ≥ 3.9** and **PyTorch ≥ 2.6** with CUDA enabled.
 
 Install all dependencies:
